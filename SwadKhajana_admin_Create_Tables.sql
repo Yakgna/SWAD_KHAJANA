@@ -44,21 +44,21 @@ END;
 
 CREATE TABLE customer_details (
     customer_id  NUMBER,
-    first_name   VARCHAR(15),
-    last_name    VARCHAR(15),
-    phone_number NUMBER(10),
-    email_id     VARCHAR(25),
+    first_name   VARCHAR(15) NOT NULL,
+    last_name    VARCHAR(15) NOT NULL,
+    phone_number NUMBER(10) UNIQUE NOT NULL,
+    email_id     VARCHAR(25) UNIQUE NOT NULL,
     PRIMARY KEY ( customer_id )
 );
 
 CREATE TABLE delivery_address (
     delivery_address_id VARCHAR(15),
-    customer_id         NUMBER,
-    address_line_1      VARCHAR(50),
+    customer_id         NUMBER NOT NULL,
+    address_line_1      VARCHAR(50) NOT NULL,
     address_line_2      VARCHAR(50),
-    city                VARCHAR(15),
-    state               VARCHAR(15),
-    pincode             VARCHAR(10),
+    city                VARCHAR(15) NOT NULL,
+    state               VARCHAR(15) NOT NULL,
+    pincode             VARCHAR(10) NOT NULL,
     PRIMARY KEY ( delivery_address_id ),
     CONSTRAINT "FK_Delivery_address.customer_id" FOREIGN KEY ( customer_id )
         REFERENCES customer_details ( customer_id )
@@ -66,12 +66,12 @@ CREATE TABLE delivery_address (
 
 CREATE TABLE billing_address (
     billing_address_id VARCHAR(15),
-    customer_id        NUMBER,
-    address_line_1     VARCHAR(25),
+    customer_id        NUMBER NOT NULL,
+    address_line_1     VARCHAR(25) NOT NULL,
     address_line_2     VARCHAR(25),
-    city               VARCHAR(15),
-    state              VARCHAR(15),
-    pincode            VARCHAR(15),
+    city               VARCHAR(15) NOT NULL,
+    state              VARCHAR(15) NOT NULL,
+    pincode            VARCHAR(15) NOT NULL,
     PRIMARY KEY ( billing_address_id ),
     CONSTRAINT "FK_Billing_address.customer_id" FOREIGN KEY ( customer_id )
         REFERENCES customer_details ( customer_id )
@@ -79,29 +79,29 @@ CREATE TABLE billing_address (
 
 CREATE TABLE payment (
     payment_id   VARCHAR(3),
-    payment_type VARCHAR(15),
+    payment_type VARCHAR(15) UNIQUE NOT NULL,
     PRIMARY KEY ( payment_id )
 );
 
 CREATE TABLE order_status (
     order_status_id   VARCHAR(3),
-    order_status_desc VARCHAR(15),
+    order_status_desc VARCHAR(15) UNIQUE NOT NULL,
     PRIMARY KEY ( order_status_id )
 );
 
 CREATE TABLE restaurant (
     restaurant_id   VARCHAR(15),
-    restaurant_name VARCHAR(25),
-    opening_time    DATE,
-    closing_time    DATE,
+    restaurant_name VARCHAR(50) NOT NULL,
+    opening_time    DATE NOT NULL,
+    closing_time    DATE NOT NULL,
     PRIMARY KEY ( restaurant_id )
 );
 
 CREATE TABLE items (
     item_id       VARCHAR(15),
-    restaurant_id VARCHAR(15),
-    item_name     VARCHAR(25),
-    item_price    NUMBER,
+    restaurant_id VARCHAR(15) NOT NULL,
+    item_name     VARCHAR(25) NOT NULL,
+    item_price    NUMBER NOT NULL,
     PRIMARY KEY ( item_id ),
     CONSTRAINT "FK_Items.restaurant_id" FOREIGN KEY ( restaurant_id )
         REFERENCES restaurant ( restaurant_id )
@@ -109,13 +109,13 @@ CREATE TABLE items (
 
 CREATE TABLE branch_address (
     branch_address_id VARCHAR(15),
-    restaurant_id     VARCHAR(15),
-    phone_number      NUMBER(10),
-    address_line_1    VARCHAR(25),
+    restaurant_id     VARCHAR(15) NOT NULL,
+    phone_number      NUMBER(10) NOT NULL,
+    address_line_1    VARCHAR(25) NOT NULL,
     address_line_2    VARCHAR(25),
-    city              VARCHAR(15),
-    state             VARCHAR(15),
-    pincode           VARCHAR(10),
+    city              VARCHAR(15) NOT NULL,
+    state             VARCHAR(15) NOT NULL,
+    pincode           VARCHAR(10) NOT NULL,
     PRIMARY KEY ( branch_address_id ),
     CONSTRAINT "FK_Branch_address.restaurant_id" FOREIGN KEY ( restaurant_id )
         REFERENCES restaurant ( restaurant_id )
@@ -123,16 +123,16 @@ CREATE TABLE branch_address (
 
 CREATE TABLE order_type (
     order_type_id   VARCHAR(2),
-    order_type_name VARCHAR(15),
+    order_type_name VARCHAR(15) UNIQUE NOT NULL,
     PRIMARY KEY ( order_type_id )
 );
 
 CREATE TABLE delivery_executive (
     executive_id VARCHAR(15),
-    first_name   VARCHAR(25),
-    last_name    VARCHAR(25),
-    dob          DATE,
-    phone_number NUMBER,
+    first_name   VARCHAR(25) NOT NULL,
+    last_name    VARCHAR(25) NOT NULL,
+    dob          DATE NOT NULL,
+    phone_number NUMBER UNIQUE NOT NULL,
     PRIMARY KEY ( executive_id )
 );
 
@@ -144,28 +144,28 @@ CREATE TABLE promo_codes (
 
 CREATE TABLE restaurant_promo (
     restaurant_promo_id VARCHAR(10),
-    promo_id            VARCHAR(10),
-    restautant_id       VARCHAR(15),
+    promo_id            VARCHAR(10) NOT NULL,
+    restaurant_id       VARCHAR(15) NOT NULL,
     PRIMARY KEY ( restaurant_promo_id ),
     CONSTRAINT "FK_Restaurant_Promo.promo_id" FOREIGN KEY ( promo_id )
         REFERENCES promo_codes ( promo_id ),
-    CONSTRAINT "FK_Restaurant_Promo.restautant_id" FOREIGN KEY ( restautant_id )
+    CONSTRAINT "FK_Restaurant_Promo.restaurant_id" FOREIGN KEY ( restaurant_id )
         REFERENCES restaurant ( restaurant_id )
 );
 
 CREATE TABLE order_details (
     order_id            VARCHAR(15),
-    order_type_id       VARCHAR(2),
-    branch_address_id   VARCHAR(15),
-    order_status_id     VARCHAR(3),
+    order_type_id       VARCHAR(2) NOT NULL,
+    branch_address_id   VARCHAR(15) NOT NULL,
+    order_status_id     VARCHAR(3) NOT NULL,
     executive_id        VARCHAR(15),
-    delivery_address_id VARCHAR(15),
-    billing_address_id  VARCHAR(15),
+    delivery_address_id VARCHAR(15) NOT NULL,
+    billing_address_id  VARCHAR(15) NOT NULL,
     restaurant_promo_id VARCHAR(10),
-    payment_id          VARCHAR(3),
-    order_date          DATE,
-    tax                 NUMBER,
-    gross_amount        NUMBER,
+    payment_id          VARCHAR(3) NOT NULL,
+    order_date          DATE NOT NULL,
+    tax                 NUMBER NOT NULL,
+    gross_amount        NUMBER NOT NULL,
     PRIMARY KEY ( order_id ),
     CONSTRAINT "FK_Order_details.payment_id" FOREIGN KEY ( payment_id )
         REFERENCES payment ( payment_id ),
@@ -188,7 +188,7 @@ CREATE TABLE order_details (
 CREATE TABLE ordered_items (
     item_id  VARCHAR(10),
     order_id VARCHAR(25),
-    quantity NUMBER,
+    quantity NUMBER NOT NULL,
     PRIMARY KEY ( item_id,
                   order_id ),
     CONSTRAINT "FK_Ordered_items.item_id" FOREIGN KEY ( item_id )
