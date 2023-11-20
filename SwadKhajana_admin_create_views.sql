@@ -10,7 +10,7 @@ BEGIN
     WHERE VIEW_NAME IN (
       'TOP_RESTAURANTS',
       'TOP_FOOD_ITEMS',
-      'MENU_VIEW',
+      'MENU_VIEW'
     )
   ) LOOP
     EXECUTE IMMEDIATE 'DROP VIEW ' || v.VIEW_NAME;
@@ -30,8 +30,7 @@ FROM Order_details od
 JOIN Branch_address ba ON od.branch_address_id = ba.branch_address_id
 JOIN Restaurant r ON ba.restaurant_id = r.restaurant_id
 GROUP BY r.restaurant_id, r.restaurant_name
-ORDER BY order_count DESC
-FETCH FIRST 5 ROWS ONLY;
+ORDER BY order_count DESC;
 
 -- 2. Top Food Items View
 CREATE VIEW Top_Food_Items AS
@@ -39,10 +38,7 @@ SELECT i.item_id, i.item_name, COUNT(*) as order_count
 FROM Ordered_items oi
 JOIN Items i ON oi.item_id = i.item_id
 GROUP BY i.item_id, i.item_name
-ORDER BY order_count DESC
-FETCH FIRST 5 ROWS ONLY;
-
-
+ORDER BY order_count DESC;
 
 -- 3. Menu View
 CREATE VIEW Menu_View AS
