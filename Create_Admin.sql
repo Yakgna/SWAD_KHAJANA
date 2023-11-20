@@ -4,23 +4,38 @@
 /*
 CREATE SwadKhajana_admin USER
 */
+CLEAR SCREEN;
 set SERVEROUTPUT on
-
+DECLARE
+    V_serial INTEGER;
+    V_sid INTEGER;
+    V_active_sess INTEGER;
 BEGIN
-    EXECUTE IMMEDIATE 'DROP USER SwadKhajana_admin CASCADE';
-    dbms_output.put_line('USER SwadKhajana_admin DROPPED');
+    SELECT COUNT(*) INTO V_active_sess FROM V$SESSION WHERE USERNAME='SWADKHAJANA_ADMIN';
+    IF (V_active_sess=1) THEN
+        SELECT sid,serial# INTO V_sid,V_serial FROM V$SESSION WHERE USERNAME='SWADKHAJANA_ADMIN';
+        EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION '||CHR(39)||V_sid||','||V_serial||CHR(39)||' IMMEDIATE';
+        DBMS_OUTPUT.PUT_LINE('Connections to SWADKHAJANA_ADMIN terminated');
+    END IF;
+    DBMS_LOCK.SLEEP(5);
+    EXECUTE IMMEDIATE 'DROP USER SWADKHAJANA_ADMIN CASCADE';
+    DBMS_OUTPUT.PUT_LINE('USER SwadKhajana_admin DROPPED');
 EXCEPTION
     WHEN OTHERS THEN
-        dbms_output.put_line('USER SwadKhajana_admin DOES NOT EXIST');
+        IF SQLCODE = -1918 THEN
+            DBMS_OUTPUT.PUT_LINE('User does not exist.');
+        ELSE
+         -- Handle other exceptions
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+        END IF;
 END;
 /
 
-CREATE USER swadkhajana_admin IDENTIFIED BY swadhkazhana123;
+CREATE USER SwadKhajana_admin IDENTIFIED BY SwadhKazhana123;
 
-ALTER USER swadkhajana_admin
-    QUOTA UNLIMITED ON data;
+ALTER USER SwadKhajana_admin QUOTA UNLIMITED ON data;
 
-GRANT connect, resource TO swadkhajana_admin WITH ADMIN OPTION;
+GRANT connect, resource TO SwadKhajana_admin WITH ADMIN OPTION;
 
 GRANT
     CREATE VIEW,
@@ -29,4 +44,4 @@ GRANT
     CREATE USER,
     DROP USER,
     ALTER USER
-TO swadkhajana_admin WITH ADMIN OPTION;
+TO SwadKhajana_admin WITH ADMIN OPTION;
