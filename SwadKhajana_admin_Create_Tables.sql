@@ -43,6 +43,9 @@ EXCEPTION
 END;
 /
 
+
+
+
 CREATE TABLE customer_details (
     customer_id  NUMBER,
     first_name   VARCHAR(15) NOT NULL,
@@ -257,3 +260,70 @@ INSERT INTO Restaurant VALUES ('R008', 'Mountain View Cafe', TO_DATE('07:30:00',
 INSERT INTO Restaurant VALUES ('R009', 'Urban Eats', TO_DATE('09:00:00', 'HH24:MI:SS'), TO_DATE('23:30:00', 'HH24:MI:SS'));
 INSERT INTO Restaurant VALUES ('R010', 'Garden Bistro', TO_DATE('08:00:00', 'HH24:MI:SS'), TO_DATE('21:30:00', 'HH24:MI:SS'));
 INSERT INTO Restaurant VALUES ('R011', 'The Downtown Diner', TO_DATE('06:00:00', 'HH24:MI:SS'), TO_DATE('23:59:59', 'HH24:MI:SS'));
+
+
+INSERT INTO Branch_address VALUES ('BA001', 'R006', 9876543210, '123 Burger St', 'Suite 101', 'CityG', 'StateG', '78901');
+INSERT INTO Branch_address VALUES ('BA002', 'R007', 8765432190, '456 Seafood Rd', 'Suite 102', 'CityH', 'StateH', '89012');
+INSERT INTO Branch_address VALUES ('BA003', 'R008', 7654321980, '789 Cafe Blvd', 'Suite 103', 'CityI', 'StateI', '90123');
+INSERT INTO Branch_address VALUES ('BA004', 'R009', 6543219870, '135 Urban Way', 'Suite 104', 'CityJ', 'StateJ', '01234');
+INSERT INTO Branch_address VALUES ('BA005', 'R010', 5432198760, '246 Bistro Ln', 'Suite 105', 'CityK', 'StateK', '12345');
+INSERT INTO Branch_address VALUES ('BA006', 'R011', 4321987650, '369 Diner Ave', 'Suite 106', 'CityL', 'StateL', '23456');
+
+
+INSERT INTO Delivery_executive VALUES ('DE001', 'Emma', 'Brown', TO_DATE('1990-01-15', 'YYYY-MM-DD'), 1122334455);
+INSERT INTO Delivery_executive VALUES ('DE002', 'Liam', 'Johnson', TO_DATE('1988-05-22', 'YYYY-MM-DD'), 2233445566);
+INSERT INTO Delivery_executive VALUES ('DE003', 'Olivia', 'Williams', TO_DATE('1992-07-30', 'YYYY-MM-DD'), 3344556677);
+INSERT INTO Delivery_executive VALUES ('DE004', 'Noah', 'Davis', TO_DATE('1989-11-09', 'YYYY-MM-DD'), 4455667788);
+INSERT INTO Delivery_executive VALUES ('DE005', 'Ava', 'Miller', TO_DATE('1991-04-17', 'YYYY-MM-DD'), 5566778899);
+INSERT INTO Delivery_executive VALUES ('DE006', 'William', 'Wilson', TO_DATE('1987-02-25', 'YYYY-MM-DD'), 6677889900);
+
+
+INSERT INTO Promo_codes VALUES ('PR01', 10);
+INSERT INTO Promo_codes VALUES ('PR02', 15);
+INSERT INTO Promo_codes VALUES ('PR03', 20);
+INSERT INTO Promo_codes VALUES ('PR04', 5);
+INSERT INTO Promo_codes VALUES ('PR05', 25);
+INSERT INTO Promo_codes VALUES ('PR06', 30);
+
+
+INSERT INTO Restaurant_promo VALUES ('RP01', 'PR01', 'R006');
+INSERT INTO Restaurant_promo VALUES ('RP02', 'PR02', 'R007');
+INSERT INTO Restaurant_promo VALUES ('RP03', 'PR03', 'R008');
+INSERT INTO Restaurant_promo VALUES ('RP04', 'PR04', 'R009');
+INSERT INTO Restaurant_promo VALUES ('RP05', 'PR05', 'R010');
+INSERT INTO Restaurant_promo VALUES ('RP06', 'PR06', 'R011');
+
+-- Items
+INSERT INTO Items VALUES ('I001', 'R006', 'Cheeseburger', 5.99);
+INSERT INTO Items VALUES ('I002', 'R006', 'Veggie Burger', 4.99);
+INSERT INTO Items VALUES ('I003', 'R007', 'Grilled Salmon', 12.99);
+INSERT INTO Items VALUES ('I004', 'R007', 'Fish Tacos', 9.99);
+INSERT INTO Items VALUES ('I005', 'R008', 'Cappuccino', 3.50);
+INSERT INTO Items VALUES ('I006', 'R008', 'Blueberry Muffin', 2.99);
+
+-- Order_type
+INSERT INTO Order_type VALUES ('O1', 'Dine-In');
+INSERT INTO Order_type VALUES ('O2', 'Takeaway');
+INSERT INTO Order_type VALUES ('O3', 'Delivery');
+INSERT INTO Order_type VALUES ('O4', 'Drive-Thru');
+INSERT INTO Order_type VALUES ('O5', 'Online Order');
+INSERT INTO Order_type VALUES ('O6', 'Catering');
+
+
+
+
+
+INSERT INTO Order_details VALUES ('OD001', 'O1', 'BA001', 'OS1', 'DE001', 'DA001', 'BA001', 'RP01', 'P01', SYSDATE, 1.5, 9.49);
+INSERT INTO Order_details VALUES ('OD002', 'O2', 'BA002', 'OS2', 'DE002', 'DA002', 'BA002', 'RP02', 'P02', SYSDATE, 2.0, 12.99);
+INSERT INTO Order_details VALUES ('OD003', 'O3', 'BA003', 'OS3', 'DE003', 'DA003', 'BA003', 'RP03', 'P03', SYSDATE, 1.0, 15.49);
+INSERT INTO Order_details VALUES ('OD004', 'O1', 'BA004', 'OS4', 'DE004', 'DA004', 'BA004', 'RP04', 'P04', SYSDATE, 2.5, 8.99);
+INSERT INTO Order_details VALUES ('OD005', 'O2', 'BA005', 'OS5', 'DE005', 'DA005', 'BA005', 'RP05', 'P05', SYSDATE, 1.8, 10.49);
+INSERT INTO Order_details VALUES ('OD006', 'O3', 'BA006', 'OS6', 'DE006', 'DA006', 'BA006', 'RP06', 'P06', SYSDATE, 2.2, 13.99);
+
+INSERT INTO Ordered_items VALUES ('I001', 'OD001', 2);
+INSERT INTO Ordered_items VALUES ('I002', 'OD001', 1);
+INSERT INTO Ordered_items VALUES ('I003', 'OD002', 3);
+INSERT INTO Ordered_items VALUES ('I004', 'OD003', 1);
+INSERT INTO Ordered_items VALUES ('I005', 'OD004', 2);
+INSERT INTO Ordered_items VALUES ('I006', 'OD005', 1);
+
