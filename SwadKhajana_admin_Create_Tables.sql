@@ -1,6 +1,7 @@
 --Execution Order:2
 --User: SwadKhajana_admin
 
+CLEAR SCREEN;
 SET SERVEROUTPUT ON
 
 BEGIN

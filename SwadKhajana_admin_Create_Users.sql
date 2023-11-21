@@ -1,6 +1,7 @@
---Execution Order:5
+--Execution Order:4
 --User: SwadKhajana_admin
 
+CLEAR SCREEN;
 /*
 CREATE RESTAURANT USER
 */
@@ -15,12 +16,12 @@ EXCEPTION
 END;
 /
 
-CREATE USER restaurant_sk IDENTIFIED BY skrestaurant123;
+CREATE USER RESTAURANT_SK IDENTIFIED BY SKRestaurant123;
 
-ALTER USER restaurant_sk
+ALTER USER RESTAURANT_SK
     QUOTA UNLIMITED ON data;
 
-GRANT connect, resource TO restaurant_sk WITH ADMIN OPTION; 
+GRANT connect, resource TO RESTAURANT_SK WITH ADMIN OPTION; 
 
 
 /*
@@ -35,12 +36,12 @@ EXCEPTION
 END;
 /
 
-CREATE USER customer_sk IDENTIFIED BY skcustomer123;
+CREATE USER CUSTOMER_SK IDENTIFIED BY SKCustomer123;
 
-ALTER USER customer_sk
+ALTER USER CUSTOMER_SK
     QUOTA UNLIMITED ON data;
 
-GRANT connect, resource TO customer_sk;
+GRANT connect, resource TO CUSTOMER_SK;
 
 
 /*
@@ -55,9 +56,9 @@ EXCEPTION
 END;
 /
 
-CREATE USER delivery_exec_sk IDENTIFIED BY skdeliveryexec123;
+CREATE USER DELIVERY_EXEC_SK IDENTIFIED BY SKDeliveryexec123;
 
-ALTER USER delivery_exec_sk
+ALTER USER DELIVERY_EXEC_SK
     QUOTA UNLIMITED ON data;
 
-GRANT connect, resource TO delivery_exec_sk;
+GRANT connect, resource TO DELIVERY_EXEC_SK;
