@@ -7,8 +7,6 @@ CREATE SwadKhajana_admin USER
 CLEAR SCREEN;
 set SERVEROUTPUT on
 DECLARE
-    V_serial INTEGER;
-    V_sid INTEGER;
     V_active_sess INTEGER;
 BEGIN
     SELECT COUNT(*) INTO V_active_sess FROM V$SESSION 
