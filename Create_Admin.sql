@@ -11,11 +11,27 @@ DECLARE
     V_sid INTEGER;
     V_active_sess INTEGER;
 BEGIN
-    SELECT COUNT(*) INTO V_active_sess FROM V$SESSION WHERE USERNAME='SWADKHAJANA_ADMIN';
-    IF (V_active_sess=1) THEN
-        SELECT sid,serial# INTO V_sid,V_serial FROM V$SESSION WHERE USERNAME='SWADKHAJANA_ADMIN';
-        EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION '||CHR(39)||V_sid||','||V_serial||CHR(39)||' IMMEDIATE';
-        DBMS_OUTPUT.PUT_LINE('Connections to SWADKHAJANA_ADMIN terminated');
+    SELECT COUNT(*) INTO V_active_sess FROM V$SESSION 
+    WHERE USERNAME IN ('SWADKHAJANA_ADMIN', 
+                                'RESTAURANT_SK',
+                                'CUSTOMER_SK',
+                                'DELIVERY_EXEC_SK');
+    IF (V_active_sess>=1) THEN
+        FOR I IN (
+            SELECT sid AS V_sid,serial# AS V_serial, username as usern FROM V$SESSION 
+            WHERE USERNAME IN ('SWADKHAJANA_ADMIN', 
+                                'RESTAURANT_SK',
+                                'CUSTOMER_SK',
+                                'DELIVERY_EXEC_SK')
+        ) LOOP
+        BEGIN
+            EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ' || CHR(39) || I.V_sid || ',' || I.V_serial || CHR(39) || ' IMMEDIATE';
+            DBMS_OUTPUT.PUT_LINE('Connections to '||I.usern||' terminated');
+            EXCEPTION
+                WHEN OTHERS THEN
+                    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+        END;
+        END LOOP;
     END IF;
     DBMS_LOCK.SLEEP(5);
     EXECUTE IMMEDIATE 'DROP USER SWADKHAJANA_ADMIN CASCADE';
