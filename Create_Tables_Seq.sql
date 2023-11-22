@@ -340,12 +340,42 @@ INSERT INTO Restaurant_promo VALUES ('RP'||RESTAURANT_PROMO_SEQ.NEXTVAL, 'PR5', 
 INSERT INTO Restaurant_promo VALUES ('RP'||RESTAURANT_PROMO_SEQ.NEXTVAL, 'PR6', 'R6');
 
 -- Items
-INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R1', 'Cheeseburger', 5.99);
-INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R2', 'Veggie Burger', 4.99);
-INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R3', 'Grilled Salmon', 12.99);
-INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R4', 'Fish Tacos', 9.99);
-INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R5', 'Cappuccino', 3.50);
-INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R6', 'Blueberry Muffin', 2.99);
+-- Add items for Restaurant R1
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R1', 'Chicken Sandwich', 6.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R1', 'Caesar Salad', 8.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R1', 'French Fries', 3.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R1', 'Chocolate Shake', 4.99);
+
+-- Add items for Restaurant R2
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R2', 'Margherita Pizza', 10.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R2', 'Pasta Alfredo', 7.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R2', 'Garlic Bread', 4.50);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R2', 'Tiramisu', 6.99);
+
+-- Add items for Restaurant R3
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R3', 'BBQ Ribs', 15.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R3', 'Shrimp Scampi', 11.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R3', 'Mashed Potatoes', 3.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R3', 'Cheesecake', 5.99);
+
+-- Add items for Restaurant R4
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R4', 'Steak Fajitas', 13.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R4', 'Chicken Quesadilla', 8.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R4', 'Guacamole', 2.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R4', 'Salsa and Chips', 3.50);
+
+-- Add items for Restaurant R5
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R5', 'Espresso', 2.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R5', 'Chocolate Croissant', 3.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R5', 'Fruit Salad', 4.50);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R5', 'Iced Latte', 5.99);
+
+-- Add items for Restaurant R6
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R6', 'Avocado Toast', 5.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R6', 'Fruit Smoothie', 4.50);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R6', 'Vegetarian Wrap', 6.99);
+INSERT INTO Items VALUES ('I'||ITEMS_SEQ.NEXTVAL, 'R6', 'Green Tea', 2.99);
+
 
 -- Order_type
 INSERT INTO Order_type VALUES ('O'||ORDER_TYPE_SEQ.NEXTVAL, 'Pickup');
@@ -353,6 +383,8 @@ INSERT INTO Order_type VALUES ('O'||ORDER_TYPE_SEQ.NEXTVAL, 'Delivery');
 INSERT INTO Order_type VALUES ('O'||ORDER_TYPE_SEQ.NEXTVAL, 'Drive-Thru');
 INSERT INTO Order_type VALUES ('O'||ORDER_TYPE_SEQ.NEXTVAL, 'Inter-state');
 
+
+-- Order_Details
 INSERT INTO Order_details VALUES ('OD'||ORDER_DETAILS_SEQ.NEXTVAL, 'O1', 'BA1', 'OS1', 'DE1', 'DA1', 'BA1', 'RP1', 'P1', SYSDATE, 18);
 INSERT INTO Order_details VALUES ('OD'||ORDER_DETAILS_SEQ.NEXTVAL, 'O2', 'BA2', 'OS2', 'DE2', 'DA2', 'BA2', 'RP2', 'P2', SYSDATE, 18);
 INSERT INTO Order_details VALUES ('OD'||ORDER_DETAILS_SEQ.NEXTVAL, 'O3', 'BA3', 'OS3', 'DE3', 'DA3', 'BA3', 'RP3', 'P3', SYSDATE, 18);
@@ -360,6 +392,8 @@ INSERT INTO Order_details VALUES ('OD'||ORDER_DETAILS_SEQ.NEXTVAL, 'O1', 'BA4', 
 INSERT INTO Order_details VALUES ('OD'||ORDER_DETAILS_SEQ.NEXTVAL, 'O2', 'BA5', 'OS5', 'DE5', 'DA5', 'BA5', 'RP5', 'P5', SYSDATE, 18);
 INSERT INTO Order_details VALUES ('OD'||ORDER_DETAILS_SEQ.NEXTVAL, 'O3', 'BA6', 'OS6', 'DE6', 'DA6', 'BA6', 'RP6', 'P6', SYSDATE, 18);
 
+
+-- Order_Items
 INSERT INTO Ordered_items VALUES ('I1', 'OD1', 2);
 INSERT INTO Ordered_items VALUES ('I2', 'OD1', 1);
 INSERT INTO Ordered_items VALUES ('I3', 'OD2', 3);

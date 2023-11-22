@@ -18,7 +18,7 @@ ORDER BY order_count DESC;
 
 -- 2. Top Food Items View
 CREATE OR REPLACE VIEW View_Top_Items AS
-SELECT i.item_id, i.item_name, COUNT(*) as order_count
+SELECT i.item_id, i.item_name, SUM(oi.quantity) as order_count
 FROM Ordered_items oi
 JOIN Items i ON oi.item_id = i.item_id
 GROUP BY i.item_id, i.item_name
