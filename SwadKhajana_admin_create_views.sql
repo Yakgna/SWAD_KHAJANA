@@ -43,8 +43,9 @@ SELECT od.order_id, os.order_status_desc, p.payment_type, r.restaurant_name, ot.
 FROM Order_details od
 JOIN Order_status os ON od.order_status_id = os.order_status_id
 JOIN Payment p ON od.payment_id = p.payment_id
-JOIN Restaurant r ON od.restaurant_promo_id = r.restaurant_id
-JOIN Order_type ot ON od.order_type_id = ot.order_type_id;
+JOIN Order_type ot ON od.order_type_id = ot.order_type_id
+JOIN BRANCH_ADDRESS ba ON od.BRANCH_ADDRESS_ID = ba.BRANCH_ADDRESS_ID
+JOIN RESTAURANT r ON r.RESTAURANT_ID = ba.RESTAURANT_ID;
  
 -- 6. Restaurant Coupon Relation View
 CREATE OR REPLACE VIEW Restaurant_Coupon_Relation AS
