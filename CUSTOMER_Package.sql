@@ -1,7 +1,6 @@
 CLEAR SCREEN;
 SET SERVEROUTPUT ON
-CREATE OR REPLACE PACKAGE customer_pkg AS 
-    
+CREATE OR REPLACE PACKAGE customer_pkg AS   
     PROCEDURE Upsert_customer(
         fname IN SWADKHAJANA_ADMIN.CUSTOMER_DETAILS.FIRST_NAME%TYPE, 
         lname IN SWADKHAJANA_ADMIN.CUSTOMER_DETAILS.LAST_NAME%TYPE,
@@ -9,32 +8,48 @@ CREATE OR REPLACE PACKAGE customer_pkg AS
         e_id IN SWADKHAJANA_ADMIN.CUSTOMER_DETAILS.EMAIL_ID%TYPE);
     
     PROCEDURE Upsert_delivery_address(
-        p_address_id SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.DELIVERY_ADDRESS_ID%TYPE,
-        p_cust_id SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.CUSTOMER_ID%TYPE,
-        p_line_1 SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.ADDRESS_LINE_1%TYPE,
-        p_line_2 SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.ADDRESS_LINE_2%TYPE,
-        p_city SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.CITY%TYPE,
-        p_state SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.STATE%TYPE,
-        p_pincode SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.PINCODE%TYPE
+        p_address_id IN SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.DELIVERY_ADDRESS_ID%TYPE,
+        p_cust_id IN SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.CUSTOMER_ID%TYPE,
+        p_line_1 IN SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.ADDRESS_LINE_1%TYPE,
+        p_line_2 IN SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.ADDRESS_LINE_2%TYPE,
+        p_city IN SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.CITY%TYPE,
+        p_state IN SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.STATE%TYPE,
+        p_pincode IN SWADKHAJANA_ADMIN.DELIVERY_ADDRESS.PINCODE%TYPE
     );
   
     PROCEDURE Upsert_billing_address(
-        p_address_id SWADKHAJANA_ADMIN.BILLING_ADDRESS.BILLING_ADDRESS_ID%TYPE,
-        p_cust_id SWADKHAJANA_ADMIN.BILLING_ADDRESS.CUSTOMER_ID%TYPE,
-        p_line_1 SWADKHAJANA_ADMIN.BILLING_ADDRESS.ADDRESS_LINE_1%TYPE,
-        p_line_2 SWADKHAJANA_ADMIN.BILLING_ADDRESS.ADDRESS_LINE_2%TYPE,
-        p_city SWADKHAJANA_ADMIN.BILLING_ADDRESS.CITY%TYPE,
-        p_state SWADKHAJANA_ADMIN.BILLING_ADDRESS.STATE%TYPE,
-        p_pincode SWADKHAJANA_ADMIN.BILLING_ADDRESS.PINCODE%TYPE
+        p_address_id IN SWADKHAJANA_ADMIN.BILLING_ADDRESS.BILLING_ADDRESS_ID%TYPE,
+        p_cust_id IN SWADKHAJANA_ADMIN.BILLING_ADDRESS.CUSTOMER_ID%TYPE,
+        p_line_1 IN SWADKHAJANA_ADMIN.BILLING_ADDRESS.ADDRESS_LINE_1%TYPE,
+        p_line_2 IN SWADKHAJANA_ADMIN.BILLING_ADDRESS.ADDRESS_LINE_2%TYPE,
+        p_city IN SWADKHAJANA_ADMIN.BILLING_ADDRESS.CITY%TYPE,
+        p_state IN SWADKHAJANA_ADMIN.BILLING_ADDRESS.STATE%TYPE,
+        p_pincode IN SWADKHAJANA_ADMIN.BILLING_ADDRESS.PINCODE%TYPE
     );
     
+    PROCEDURE place_order(
+        p_order_type_id IN SWADKHAJANA_ADMIN.ORDER_DETAILS.ORDER_TYPE_ID%TYPE,
+        p_delivery_address_id IN SWADKHAJANA_ADMIN.ORDER_DETAILS.DELIVERY_ADDRESS_ID%TYPE,
+        p_billing_address_id IN SWADKHAJANA_ADMIN.ORDER_DETAILS.BILLING_ADDRESS_ID%TYPE,
+        p_branch_address_id IN SWADKHAJANA_ADMIN.ORDER_DETAILS.BRANCH_ADDRESS_ID%TYPE,
+        p_restaurant_promo_id IN SWADKHAJANA_ADMIN.ORDER_DETAILS.RESTAURANT_PROMO_ID%TYPE,
+        p_payment_id IN SWADKHAJANA_ADMIN.ORDER_DETAILS.PAYMENT_ID%TYPE,
+        p_order_date IN SWADKHAJANA_ADMIN.ORDER_DETAILS.ORDER_DATE%TYPE,
+        p_executive_id IN SWADKHAJANA_ADMIN.ORDER_DETAILS.EXECUTIVE_ID%TYPE,
+        p_tax IN SWADKHAJANA_ADMIN.ORDER_DETAILS.TAX%TYPE
+    );
+
+    PROCEDURE add_ordered_items(
+    item_id  IN SWADKHAJANA_ADMIN.ORDERED_ITEMS.ITEM_ID%TYPE,
+    quantity IN SWADKHAJANA_ADMIN.ORDERED_ITEMS.QUANTITY%TYPE
+    );
 END customer_pkg;
 /
 
 CREATE OR REPLACE PACKAGE BODY customer_pkg AS
 
 PROCEDURE Upsert_customer(
-    fname IN SWADKHAJANA_ADMIN.CUSTOMER_DETAILS.FIRST_NAME%TYPE, 
+    fname IN SWADKHAJANA_ADMIN.CUSTOMER_DETAILS.FIRST_NAME%TYPE,
     lname IN SWADKHAJANA_ADMIN.CUSTOMER_DETAILS.LAST_NAME%TYPE,
     ph_num IN SWADKHAJANA_ADMIN.CUSTOMER_DETAILS.PHONE_NUMBER%TYPE,
     e_id IN SWADKHAJANA_ADMIN.CUSTOMER_DETAILS.EMAIL_ID%TYPE)
@@ -178,6 +193,57 @@ EXCEPTION
         END IF;
         ROLLBACK; -- Rollback changes if an error occurs
 END Upsert_billing_address;
+PROCEDURE place_order(
+    p_order_type_id SWADKHAJANA_ADMIN.ORDER_DETAILS.ORDER_TYPE_ID%TYPE,
+    p_delivery_address_id SWADKHAJANA_ADMIN.ORDER_DETAILS.DELIVERY_ADDRESS_ID%TYPE,
+    p_billing_address_id SWADKHAJANA_ADMIN.ORDER_DETAILS.BILLING_ADDRESS_ID%TYPE,
+    p_branch_address_id SWADKHAJANA_ADMIN.ORDER_DETAILS.BRANCH_ADDRESS_ID%TYPE,
+    p_restaurant_promo_id SWADKHAJANA_ADMIN.ORDER_DETAILS.RESTAURANT_PROMO_ID%TYPE,
+    p_payment_id SWADKHAJANA_ADMIN.ORDER_DETAILS.PAYMENT_ID%TYPE,
+    p_order_date SWADKHAJANA_ADMIN.ORDER_DETAILS.ORDER_DATE%TYPE,
+    p_executive_id SWADKHAJANA_ADMIN.ORDER_DETAILS.EXECUTIVE_ID%TYPE,
+    p_tax SWADKHAJANA_ADMIN.ORDER_DETAILS.TAX%TYPE
+)
+IS
+BEGIN
+    -- Insert a new record if the order doesn't exist
+INSERT INTO SWADKHAJANA_ADMIN.ORDER_DETAILS VALUES (
+                                                           'OD'||SWADKHAJANA_ADMIN.ORDER_DETAILS_SEQ.NEXTVAL,
+                                                           p_order_type_id,
+                                                           p_branch_address_id,
+                                                           'OS1',
+                                                           p_executive_id,
+                                                           p_delivery_address_id,
+                                                           p_billing_address_id,
+                                                           p_restaurant_promo_id,
+                                                           p_payment_id,
+                                                           p_order_date,
+                                                           p_tax
+                                                   );
+DBMS_OUTPUT.PUT_LINE('Order added');
+COMMIT; -- Commit the changes
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Handle other exceptions or log errors as needed
+        DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
+ROLLBACK; -- Rollback changes if an error occurs
+END place_order;
+
+PROCEDURE add_ordered_items(
+    item_id  SWADKHAJANA_ADMIN.ORDERED_ITEMS.ITEM_ID%TYPE,
+    quantity SWADKHAJANA_ADMIN.ORDERED_ITEMS.QUANTITY%TYPE
+)
+IS
+BEGIN
+    -- Insert a new record if the order doesn't exist
+    INSERT INTO SWADKHAJANA_ADMIN.ORDERED_ITEMS VALUES ('I1', 'OD'||SWADKHAJANA_ADMIN.ORDER_DETAILS_SEQ.CURRVAL, 2);
+    COMMIT; -- Commit the changes
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Handle other exceptions or log errors as needed
+        DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
+    ROLLBACK; -- Rollback changes if an error occurs
+END add_ordered_items;
 END customer_pkg;
 /
 
@@ -205,4 +271,9 @@ EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 6, '963 Birch St', 'Unit 6', 'CityF', 'StateF', '67891');
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.CURRVAL, 6, '963 Birch St', 'Unit 6', 'CityF', 'StateF', '67890');
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 7, '963 Birch St', 'Unit 6', 'CityF', 'StateF', '67890');
---SELECT * FROM SWADKHAJANA_ADMIN.CUSTOMER_DETAILS;
+
+--Place order 1
+EXEC customer_pkg.place_order('O1', 'DA1', 'BA1', 'RBA1',  'RP1', 'P1', SYSDATE, 'DE1', 18);
+EXEC customer_pkg.add_ordered_items('I1',2);
+EXEC customer_pkg.add_ordered_items('I2',4);
+EXEC customer_pkg.add_ordered_items('I3',1);
