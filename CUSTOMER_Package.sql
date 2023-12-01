@@ -277,3 +277,14 @@ EXEC customer_pkg.place_order('O1', 'DA1', 'BA1', 'RBA1',  'RP1', 'P1', SYSDATE,
 EXEC customer_pkg.add_ordered_items('I1',2);
 EXEC customer_pkg.add_ordered_items('I2',4);
 EXEC customer_pkg.add_ordered_items('I3',1);
+
+--Place order 2
+EXEC customer_pkg.place_order('O2', 'DA2', 'BA2', 'RBA3',  NULL, 'P1', SYSDATE, 'DE2', 18);
+EXEC customer_pkg.add_ordered_items('I1',2);
+EXEC customer_pkg.add_ordered_items('I2',4);
+EXEC customer_pkg.add_ordered_items('I3',1);
+
+/*
+Grant permission to CUSTOMER_SK user
+*/
+GRANT EXECUTE ON CUSTOMER_PKG TO CUSTOMER_SK;
