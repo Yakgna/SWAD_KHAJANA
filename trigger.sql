@@ -1,3 +1,4 @@
+--Check if customer phone number is valid
 CREATE OR REPLACE TRIGGER validate_phone_number_cust
 BEFORE INSERT OR UPDATE ON customer_details
 FOR EACH ROW
@@ -13,6 +14,7 @@ EXCEPTION
 END;
 /
 
+--Check if executive phone number is valid
 CREATE OR REPLACE TRIGGER validate_phone_number_del_exec
 BEFORE INSERT OR UPDATE ON delivery_executive
 FOR EACH ROW
@@ -28,6 +30,7 @@ EXCEPTION
 END;
 /
 
+--Check if the email is valid
 CREATE OR REPLACE TRIGGER check_customer_email
 BEFORE INSERT OR UPDATE ON customer_details
 FOR EACH ROW
@@ -40,6 +43,7 @@ BEGIN
 END;
 /
 
+--Check retaurant closing time before accepting order
 CREATE OR REPLACE TRIGGER check_closing_time
 BEFORE INSERT ON order_details
 FOR EACH ROW
@@ -63,6 +67,33 @@ BEGIN
     IF TO_NUMBER(TO_CHAR(SYSTIMESTAMP, 'HH24')) > closing_hour OR
        (TO_NUMBER(TO_CHAR(SYSTIMESTAMP, 'HH24')) = closing_hour AND TO_NUMBER(TO_CHAR(SYSTIMESTAMP, 'MI')) > closing_minute) THEN
         RAISE_APPLICATION_ERROR(-20001, 'Order cannot be created past restaurant closing time');
+    END IF;
+END;
+/
+
+--Check if the items belong to that restaurant
+CREATE OR REPLACE TRIGGER check_ordered_items
+BEFORE INSERT ON ordered_items
+FOR EACH ROW
+DECLARE
+    v_restaurant_id VARCHAR2(15);
+BEGIN
+    -- Retrieve the restaurant ID for the given order
+    SELECT branch_address.restaurant_id
+    INTO v_restaurant_id
+    FROM order_details
+    JOIN branch_address ON order_details.branch_address_id = branch_address.branch_address_id
+    WHERE order_details.order_id = :NEW.order_id;
+
+    -- Check if the item belongs to the same restaurant
+    IF :NEW.item_id IS NOT NULL THEN
+        IF NOT EXISTS (
+            SELECT 1
+            FROM items
+            WHERE item_id = :NEW.item_id AND restaurant_id = v_restaurant_id
+        ) THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Item does not belong to the same restaurant as the order.');
+        END IF;
     END IF;
 END;
 /
