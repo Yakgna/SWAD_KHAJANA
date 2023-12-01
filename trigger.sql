@@ -77,6 +77,7 @@ BEFORE INSERT ON ordered_items
 FOR EACH ROW
 DECLARE
     v_restaurant_id VARCHAR2(15);
+    v_item_count NUMBER;
 BEGIN
     -- Retrieve the restaurant ID for the given order
     SELECT branch_address.restaurant_id
@@ -87,11 +88,13 @@ BEGIN
 
     -- Check if the item belongs to the same restaurant
     IF :NEW.item_id IS NOT NULL THEN
-        IF NOT EXISTS (
-            SELECT 1
-            FROM items
-            WHERE item_id = :NEW.item_id AND restaurant_id = v_restaurant_id
-        ) THEN
+        -- Count the items with the specified item_id and restaurant_id
+        SELECT COUNT(*)
+        INTO v_item_count
+        FROM items
+        WHERE item_id = :NEW.item_id AND restaurant_id = v_restaurant_id;
+
+        IF v_item_count = 0 THEN
             RAISE_APPLICATION_ERROR(-20001, 'Item does not belong to the same restaurant as the order.');
         END IF;
     END IF;
