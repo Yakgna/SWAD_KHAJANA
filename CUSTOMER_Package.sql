@@ -265,7 +265,7 @@ EXEC customer_pkg.Upsert_delivery_address('DA'||SWADKHAJANA_ADMIN.DELIVERY_ADDRE
 EXEC customer_pkg.Upsert_delivery_address('DA'||SWADKHAJANA_ADMIN.DELIVERY_ADDRESS_SEQ.NEXTVAL, 4, '135 Pine St', 'Apt 4', 'Albany', 'New York', '12203');
 EXEC customer_pkg.Upsert_delivery_address('DA'||SWADKHAJANA_ADMIN.DELIVERY_ADDRESS_SEQ.NEXTVAL, 5, '246 Maple St', 'Apt 5', 'Worcester', 'Massachusetts', '01608');
 EXEC customer_pkg.Upsert_delivery_address('DA'||SWADKHAJANA_ADMIN.DELIVERY_ADDRESS_SEQ.NEXTVAL, 6, '369 Birch St', 'Apt 6', 'Syracuse', 'New York', '13202');
-EXEC customer_pkg.Upsert_delivery_address('DA'||SWADKHAJANA_ADMIN.DELIVERY_ADDRESS_SEQ.CURRVAL, 7, '369 Birch St', 'Apt 6', 'Syracuse', 'New York', '13202');
+EXEC customer_pkg.Upsert_delivery_address('DA'||SWADKHAJANA_ADMIN.DELIVERY_ADDRESS_SEQ.NEXTVAL, 7, '369 Birch St', 'Apt 6', 'Syracuse', 'New York', '13202');
 
 
 -- Adding billing addresses for Massachusetts and New York
@@ -275,7 +275,7 @@ EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 4, '135 Pine St', 'Apt 4', 'Albany', 'New York', '12203');
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 5, '246 Maple St', 'Apt 5', 'Worcester', 'Massachusetts', '01608');
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 6, '963 Birch St', 'Unit 6', 'Syracuse', 'New York', '13202');
-EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.CURRVAL, 7, '963 Birch St', 'Unit 6', 'Syracuse', 'New York', '13202');
+EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 7, '963 Birch St', 'Unit 6', 'Syracuse', 'New York', '13202');
 
 --Place order 1
 EXEC customer_pkg.place_order('O1', 'DA1', 'BA1', 'RBA1',  'RP1', 'P1', SYSDATE, 'DE1', 18);
