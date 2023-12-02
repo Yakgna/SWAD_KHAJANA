@@ -40,8 +40,8 @@ CREATE OR REPLACE PACKAGE customer_pkg AS
     );
 
     PROCEDURE add_ordered_items(
-    item_id  IN SWADKHAJANA_ADMIN.ORDERED_ITEMS.ITEM_ID%TYPE,
-    quantity IN SWADKHAJANA_ADMIN.ORDERED_ITEMS.QUANTITY%TYPE
+    p_item_id  IN SWADKHAJANA_ADMIN.ORDERED_ITEMS.ITEM_ID%TYPE,
+    p_quantity IN SWADKHAJANA_ADMIN.ORDERED_ITEMS.QUANTITY%TYPE
     );
 END customer_pkg;
 /
@@ -230,15 +230,19 @@ ROLLBACK; -- Rollback changes if an error occurs
 END place_order;
 
 PROCEDURE add_ordered_items(
-    item_id  SWADKHAJANA_ADMIN.ORDERED_ITEMS.ITEM_ID%TYPE,
-    quantity SWADKHAJANA_ADMIN.ORDERED_ITEMS.QUANTITY%TYPE
+    p_item_id  SWADKHAJANA_ADMIN.ORDERED_ITEMS.ITEM_ID%TYPE,
+    p_quantity SWADKHAJANA_ADMIN.ORDERED_ITEMS.QUANTITY%TYPE
 )
 IS
 BEGIN
     -- Insert a new record if the order doesn't exist
-    INSERT INTO SWADKHAJANA_ADMIN.ORDERED_ITEMS VALUES ('I1', 'OD'||SWADKHAJANA_ADMIN.ORDER_DETAILS_SEQ.CURRVAL, 2);
+    INSERT INTO SWADKHAJANA_ADMIN.ORDERED_ITEMS VALUES (p_item_id, 'OD'||SWADKHAJANA_ADMIN.ORDER_DETAILS_SEQ.CURRVAL, 2);
     COMMIT; -- Commit the changes
 EXCEPTION
+    WHEN DUP_VAL_ON_INDEX THEN
+        UPDATE SWADKHAJANA_ADMIN.ORDERED_ITEMS SET QUANTITY=p_quantity WHERE ITEM_ID=p_item_id;
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Updated item quantity');
     WHEN OTHERS THEN
         -- Handle other exceptions or log errors as needed
         DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
@@ -255,7 +259,6 @@ EXEC customer_pkg.Upsert_customer('Bob', 'Smith', 4567890123, 'bob.smith@gmail.c
 EXEC customer_pkg.Upsert_customer('David', 'Jones', 6789012345, 'david.jones@gmail.com');
 
 -- Adding delivery addresses for Massachusetts and New York
--- Delivery addresses with real names for Massachusetts and New York
 EXEC customer_pkg.Upsert_delivery_address('DA'||SWADKHAJANA_ADMIN.DELIVERY_ADDRESS_SEQ.NEXTVAL, 1, '123 Main St', 'Apt 1', 'Boston', 'Massachusetts', '02108');
 EXEC customer_pkg.Upsert_delivery_address('DA'||SWADKHAJANA_ADMIN.DELIVERY_ADDRESS_SEQ.NEXTVAL, 2, '456 Elm St', 'Apt 2', 'New York City', 'New York', '10001');
 EXEC customer_pkg.Upsert_delivery_address('DA'||SWADKHAJANA_ADMIN.DELIVERY_ADDRESS_SEQ.NEXTVAL, 3, '789 Oak St', 'Apt 3', 'Cambridge', 'Massachusetts', '02139');
@@ -266,7 +269,6 @@ EXEC customer_pkg.Upsert_delivery_address('DA'||SWADKHAJANA_ADMIN.DELIVERY_ADDRE
 
 
 -- Adding billing addresses for Massachusetts and New York
--- Billing addresses with real names for Massachusetts and New York
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 1, '123 Main St', 'Apt 1', 'Boston', 'Massachusetts', '02108');
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 2, '456 Elm St', 'Apt 2', 'New York City', 'New York', '10001');
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 3, '789 Oak St', 'Apt 3', 'Cambridge', 'Massachusetts', '02139');
@@ -274,8 +276,6 @@ EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 5, '246 Maple St', 'Apt 5', 'Worcester', 'Massachusetts', '01608');
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.NEXTVAL, 6, '963 Birch St', 'Unit 6', 'Syracuse', 'New York', '13202');
 EXEC customer_pkg.Upsert_billing_address('BA'||SWADKHAJANA_ADMIN.BILLING_ADDRESS_SEQ.CURRVAL, 7, '963 Birch St', 'Unit 6', 'Syracuse', 'New York', '13202');
-
-
 
 --Place order 1
 EXEC customer_pkg.place_order('O1', 'DA1', 'BA1', 'RBA1',  'RP1', 'P1', SYSDATE, 'DE1', 18);

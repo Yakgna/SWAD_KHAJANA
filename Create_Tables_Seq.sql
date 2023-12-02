@@ -198,7 +198,8 @@ CREATE TABLE ordered_items (
     CONSTRAINT "FK_Ordered_items.item_id" FOREIGN KEY ( item_id )
         REFERENCES items ( item_id ),
     CONSTRAINT "FK_Ordered_items.order_id" FOREIGN KEY ( order_id )
-        REFERENCES order_details ( order_id )
+        REFERENCES order_details ( order_id ),
+    CONSTRAINT unique_items UNIQUE (item_id, order_id)
 );
 
 /*

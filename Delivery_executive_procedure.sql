@@ -32,13 +32,3 @@ EXCEPTION
         ROLLBACK;
 END upsert_delivery_executive;
 /
-
-EXEC upsert_delivery_executive(NULL, 'Emma', 'Brown', TO_DATE('1990-01-15', 'YYYY-MM-DD'), 1122334455);
-EXEC upsert_delivery_executive(NULL, 'Liam', 'Johnson', TO_DATE('1988-05-22', 'YYYY-MM-DD'), 2233445566);
-EXEC upsert_delivery_executive(NULL, 'Olivia', 'Williams', TO_DATE('1992-07-30', 'YYYY-MM-DD'), 3344556677);
-EXEC upsert_delivery_executive(NULL, 'Noah', 'Davis', TO_DATE('1989-11-09', 'YYYY-MM-DD'), 4455667788);
-EXEC upsert_delivery_executive(NULL, 'Ava', 'Miller', TO_DATE('1991-04-17', 'YYYY-MM-DD'), 5566778899);
-EXEC upsert_delivery_executive(NULL, 'William', 'Wilson', TO_DATE('1987-02-25', 'YYYY-MM-DD'), 6677889900);
-EXEC upsert_delivery_executive(NULL, 'Sophia', 'Taylor', TO_DATE('1995-09-12', 'YYYY-MM-DD'), 7788990011);
---Updating details
-EXEC upsert_delivery_executive('DE7', 'Sophia', 'Wilson', TO_DATE('1995-09-12', 'YYYY-MM-DD'), 7788990011);
