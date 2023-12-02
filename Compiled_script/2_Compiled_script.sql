@@ -806,8 +806,7 @@ END RESTAURANT_PACKAGE;
 CREATE OR REPLACE FUNCTION SWADKHAJANA_ADMIN.FNCALCULATEORDERTOTALAMOUNT (
     f_orderId IN NUMBER,
     f_offer_id NUMBER,
-    f_tax NUMBER,
-    f_delivery_charge NUMBER
+    f_tax NUMBER
 )
 RETURN NUMBER
 IS
@@ -1209,8 +1208,7 @@ SELECT
     ROUND((oi.quantity * i.item_price * pc.offer_percentage / 100), 2) AS discount_amount,
     ROUND(((oi.quantity * i.item_price) - (oi.quantity * i.item_price * pc.offer_percentage / 100)), 2) AS discounted_price,
     ROUND((oi.quantity * i.item_price * od.tax / 100), 2) AS tax_amount,
-    ROUND(((oi.quantity * i.item_price) - (oi.quantity * i.item_price * pc.offer_percentage / 100)) + 
-    (oi.quantity * i.item_price * od.tax / 100), 2) AS gross_amount
+    FNCALCULATEORDERTOTALAMOUNT (od.order_id,pc.promo_id,ROUND((oi.quantity * i.item_price * od.tax / 100), 2)) AS gross_amount
 FROM
     Order_details od
 JOIN Order_status os ON od.order_status_id = os.order_status_id
