@@ -32,3 +32,32 @@ EXCEPTION
         ROLLBACK;
 END upsert_delivery_executive;
 /
+
+CREATE OR REPLACE PROCEDURE update_order_status(
+    p_order_id SWADKHAJANA_ADMIN.ORDER_DETAILS.ORDER_ID%TYPE,
+    p_order_status_id SWADKHAJANA_ADMIN.ORDER_DETAILS.ORDER_status_ID%TYPE
+    )
+    IS
+    BEGIN
+        UPDATE SWADKHAJANA_ADMIN.ORDER_DETAILS 
+        SET order_status_id=p_order_status_id
+        WHERE order_id=p_order_id;
+        COMMIT; -- Commit the changes
+    EXCEPTION
+        WHEN OTHERS THEN
+            -- Handle other exceptions or log errors as needed
+            DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
+    ROLLBACK; -- Rollback changes if an error occurs
+END update_order_status;
+/
+
+/*
+Grant permission to DELIVERY_EXEC_SK user
+*/
+GRANT EXECUTE ON upsert_delivery_executive TO DELIVERY_EXEC_SK;
+/*
+Grant permission for update_order_status
+*/
+GRANT EXECUTE ON update_order_status TO DELIVERY_EXEC_SK;
+GRANT EXECUTE ON update_order_status TO RESTAURANT_SK;
+GRANT EXECUTE ON update_order_status TO CUSTOMER_SK;
