@@ -1,3 +1,4 @@
+CLEAR SCREEN;
 --Check if customer phone number is valid
 CREATE OR REPLACE TRIGGER validate_phone_number_cust
 BEFORE INSERT OR UPDATE ON customer_details
@@ -93,10 +94,16 @@ BEGIN
         INTO v_item_count
         FROM items
         WHERE item_id = :NEW.item_id AND restaurant_id = v_restaurant_id;
-
         IF v_item_count = 0 THEN
             RAISE_APPLICATION_ERROR(-20001, 'Item does not belong to the same restaurant as the order.');
         END IF;
     END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE=-20001 THEN
+            DBMS_OUTPUT.PUT_LINE('Item does not belong to the same restaurant as the order.');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+        END IF;
 END;
 /
