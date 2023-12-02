@@ -803,7 +803,7 @@ END RESTAURANT_PACKAGE;
 /
 
 
-CREATE OR REPLACE FUNCTION SWADKHAJANA_ADMIN.FNCALCULATEORDERTOTALAMOUNT (
+CREATE OR REPLACE FUNCTION FNCALCULATEORDERTOTALAMOUNT (
     f_orderId IN NUMBER,
     f_offer_id NUMBER,
     f_tax NUMBER
@@ -828,7 +828,7 @@ BEGIN
     -- Ensure max_disc does not exceed orderTotalAmount
     max_disc := LEAST(max_disc, orderTotalAmount);
 
-    orderTotalAmount := GREATEST(orderTotalAmount - max_disc, 0) + f_tax + f_delivery_charge;
+    orderTotalAmount := GREATEST(orderTotalAmount - max_disc, 0) + f_tax;
 
     RETURN orderTotalAmount;
 END;
